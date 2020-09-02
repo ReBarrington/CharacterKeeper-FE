@@ -11,11 +11,11 @@ router.get('/', (req, res) => {
     })
     .catch(err => {
         console.log(err)
-        res.status(500).json({ message: 'Failed to get Books'})
+        res.status(500).json({ message: 'Failed to get books'})
     });
 })
 
-// add new book
+// add new book, return full list
 router.post('/', (req, res) => {
     Books.addBook(req.body)
         .then(book => {
@@ -25,6 +25,42 @@ router.post('/', (req, res) => {
             console.log(err)
             res.status(500).json({ message: "Failed to post new book." })
         })
+})
+
+// see one book by id
+router.get('/:id', (req, res) => {
+    Books.getBookById(req.params.id)
+    .then((book) => {
+        if (book) {
+            res.status(200).json(book)
+        } else {
+            res.status(404).json({ message: "Book not found." })
+        }
+    })
+    .catch(err => {
+        console.log(err)
+        res.status(500).json({ message: "Error retrieving the book."})
+    })
+})
+
+// get characters
+router.get('/:id/characters', (req, res) => {
+    Books.getBookById(req.params.id)
+    .then((book) => {
+        if (book) {
+            let id = book[0].id
+            Books.getCharacters(id)
+            .then((characters) => {
+                res.status(200).json(characters)
+            })
+        } else {
+            res.status(404).json({ message: "Book not found." })
+        }
+    })
+    .catch(err => {
+        console.log(err)
+        res.status(500).json({ message: "Error retrieving the book."})
+    })
 })
 
 

@@ -1,7 +1,9 @@
 const db = require('../db-config.js');
+const mappers = require('./mappers.js')
 
 module.exports = {
     getBooks,
+    getBookById,
     getCharacters,
     getRelationships,
     addBook,
@@ -11,14 +13,21 @@ function getBooks() {
     return db('books')
 }
 
+function getBookById(id) {
+    return db('books')
+        .where('books.id', id)
+
+}
+
 // SELECT characters.name as Name, characters.description, characters.alive as Alive
 // FROM characters
 // where characters.book_id = 3
 
-function getCharacters(book_id) {
-    db('characters')
-        .select('characters.name as Name', 'characters.description as Description', 'character.alive as Alive' )
-        .where('characters.book_id', book_id)
+function getCharacters(bookId) {
+    return db('characters')
+        .select('characters.name as Name', 'characters.description as Description' )
+        .where('characters.book_id', bookId)
+        // .then(characters => characters.map(character => mappers.charactersToBook(characters)))
 }
 
 // SELECT characters.name, relationships.relationship_type, characters.description
