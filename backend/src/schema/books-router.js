@@ -1,5 +1,6 @@
 const express = require('express');
 const Books = require('./books-model.js');
+const mappers = require('./mappers.js');
 
 const router = express.Router();
 
@@ -53,6 +54,10 @@ router.get('/:id/characters', (req, res) => {
             .then((characters) => {
                 res.status(200).json(characters)
             })
+            .catch(err => {
+                console.log(err)
+                res.status(500).json({ message: "Error retrieving characters." })
+            })
         } else {
             res.status(404).json({ message: "Book not found." })
         }
@@ -63,5 +68,26 @@ router.get('/:id/characters', (req, res) => {
     })
 })
 
+// make new character
+router.post('/:id/characters', (req, res) => {
+    Books.addCharacter(req.body) 
+    .then((character) => {
+        res.status(201).json(character)
+    })
+    .catch(err => console.log(err))
+})
+
+// edit character
+router.put('/:id/character', (req, res) => {
+    Books.getBookById(req.params.id)
+    .then((book) => {
+        if (book) {
+            Books.update(character.id, req.body)
+            .then((character) => {
+                res.status(202).json('UPDATING CHARACTER: ', character.name)
+            })
+        }
+    })
+})
 
 module.exports = router;

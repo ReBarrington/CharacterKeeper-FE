@@ -1,11 +1,12 @@
 module.exports = {
-    charactersToBook,
+    relationshipsToCharacter,
 }
 
-function charactersToBook(characters) {
+function relationshipsToCharacter(character, relation) {
     const result = {
-        ...characters,
-        character: characters
+        ...character,
+        relationships: [...relation],
+        mapping: 'TRUE'
     };
 
     return result;
