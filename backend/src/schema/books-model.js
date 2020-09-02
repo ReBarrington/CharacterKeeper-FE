@@ -3,7 +3,8 @@ const db = require('../db-config.js');
 module.exports = {
     getBooks,
     getCharacters,
-    getRelationships
+    getRelationships,
+    addBook,
 }
 
 function getBooks() {
@@ -32,4 +33,10 @@ function getRelationships(character_id) {
         .join('Characters', 'relationships.relatives_id', 'characters.id')
         .join('books', 'relationships.book_id', 'books.id')
         .where('relationships.character_id', character_id)
+}
+
+function addBook(book) {
+    return db('books')
+        .insert(book, 'id')
+        .then(([id]) => getBooks())
 }
