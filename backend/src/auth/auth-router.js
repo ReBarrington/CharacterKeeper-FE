@@ -2,7 +2,7 @@ const router = require('express').Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-Users = require('../models/users-model.js');
+Users = require('../schema/users-model');
 secrets = require('./secrets.js');
 
 
